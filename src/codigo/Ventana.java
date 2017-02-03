@@ -8,6 +8,8 @@ package codigo;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -17,6 +19,8 @@ import java.awt.image.BufferedImage;
 public class Ventana extends javax.swing.JFrame {
 
     BufferedImage buffer = null;
+    BufferedImage buffer2 = null;
+    Circulo auxiliar = null;
     
     public Ventana() {
         initComponents();
@@ -28,6 +32,15 @@ public class Ventana extends javax.swing.JFrame {
         buffer = (BufferedImage) lienzo.createImage(lienzo.getWidth(), lienzo.getHeight());
         // Creo una imagen modificable
         Graphics2D g2 = buffer.createGraphics();
+        // Dibujamos un rectangulo blanco del tamaño del lienzo
+        g2.setColor(Color.white);
+        g2.fillRect(0, 0, lienzo.getWidth(), lienzo.getHeight());
+        
+        // Inicializo el segundo buffer
+        // Creo una imagen del mismo ancho y alto que el lienzo
+        buffer2 = (BufferedImage) lienzo.createImage(lienzo.getWidth(), lienzo.getHeight());
+        // Creo una imagen modificable
+        g2 = buffer2.createGraphics();
         // Dibujamos un rectangulo blanco del tamaño del lienzo
         g2.setColor(Color.white);
         g2.fillRect(0, 0, lienzo.getWidth(), lienzo.getHeight());
@@ -53,6 +66,20 @@ public class Ventana extends javax.swing.JFrame {
         lienzo = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lienzo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                lienzoMouseDragged(evt);
+            }
+        });
+        lienzo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lienzoMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                lienzoMouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout lienzoLayout = new javax.swing.GroupLayout(lienzo);
         lienzo.setLayout(lienzoLayout);
@@ -84,6 +111,35 @@ public class Ventana extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void lienzoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMousePressed
+        auxiliar = new Circulo(evt.getX(), evt.getY(), 1, Color.MAGENTA, true   );
+        Graphics2D g2 = (Graphics2D) buffer.getGraphics();
+        
+        g2.fill(auxiliar);
+        repaint(0,0,1,1);
+    }//GEN-LAST:event_lienzoMousePressed
+
+    private void lienzoMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMouseDragged
+       Graphics2D g2 = (Graphics2D) buffer.getGraphics();
+       //Borro lo que hubiera en el lienzo
+       g2.drawImage(buffer2, 0, 0, null);
+       
+       //Dibujo el circulo
+       int radio =  Math.abs((int)auxiliar.x - evt.getX());
+       auxiliar.width = radio;
+       auxiliar.height = radio;
+       auxiliar.dibujate(g2);
+       
+       g2.drawImage(buffer, 0, 0, null);
+       repaint(0,0,1,1);
+    }//GEN-LAST:event_lienzoMouseDragged
+
+    private void lienzoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMouseReleased
+        Graphics2D g2 = (Graphics2D) buffer2.getGraphics();
+        
+        auxiliar.dibujate(g2);
+    }//GEN-LAST:event_lienzoMouseReleased
 
     /**
      * @param args the command line arguments

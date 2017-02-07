@@ -20,6 +20,9 @@ public class Ventana extends javax.swing.JFrame {
 
     BufferedImage buffer = null;
     BufferedImage buffer2 = null;
+    
+    Graphics2D bufferGraphics, buffer2Graphics, lienzoGraphics = null;
+    
     Circulo miCirculo = null;
     Cuadrado miCuadrado = null;
     Color colorSelect = null;
@@ -32,30 +35,30 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     private void initBuffers() {
+        lienzoGraphics = (Graphics2D) lienzo.getGraphics();
+        
         // Creo una imagen del mismo ancho y alto que el lienzo
         buffer = (BufferedImage) lienzo.createImage(lienzo.getWidth(), lienzo.getHeight());
         // Creo una imagen modificable
-        Graphics2D g2 = buffer.createGraphics();
+        bufferGraphics = buffer.createGraphics();
         // Dibujamos un rectangulo blanco del tamaño del lienzo
-        g2.setColor(Color.white);
-        g2.fillRect(0, 0, lienzo.getWidth(), lienzo.getHeight());
+        bufferGraphics.setColor(Color.white);
+        bufferGraphics.fillRect(0, 0, lienzo.getWidth(), lienzo.getHeight());
 
         // Inicializo el segundo buffer
         // Creo una imagen del mismo ancho y alto que el lienzo
         buffer2 = (BufferedImage) lienzo.createImage(lienzo.getWidth(), lienzo.getHeight());
         // Creo una imagen modificable
-        g2 = buffer2.createGraphics();
+        buffer2Graphics = buffer2.createGraphics();
         // Dibujamos un rectangulo blanco del tamaño del lienzo
-        g2.setColor(Color.white);
-        g2.fillRect(0, 0, lienzo.getWidth(), lienzo.getHeight());
+        buffer2Graphics.setColor(Color.white);
+        buffer2Graphics.fillRect(0, 0, lienzo.getWidth(), lienzo.getHeight());
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-
-        Graphics2D g2 = (Graphics2D) lienzo.getGraphics();
-        g2.drawImage(buffer, 0, 0, null);
+        lienzoGraphics.drawImage(buffer, 0, 0, null);
     }
 
     /**
@@ -203,15 +206,14 @@ public class Ventana extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lienzoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMousePressed
-        Graphics2D g2 = (Graphics2D) buffer.getGraphics();
         switch (formSelect) {
             case 1: 
                 miCirculo = new Circulo(evt.getX(), evt.getY(), 1, colorSelect, true); 
-                miCirculo.dibujate(g2);
+                miCirculo.dibujate(bufferGraphics);
                 break;
             case 2: 
                 miCuadrado = new Cuadrado(evt.getX(), evt.getY(), 1, colorSelect, true); 
-                miCuadrado.dibujate(g2);
+                miCuadrado.dibujate(bufferGraphics);
                 break;
             default: return;
         }
@@ -219,19 +221,18 @@ public class Ventana extends javax.swing.JFrame {
     }//GEN-LAST:event_lienzoMousePressed
 
     private void lienzoMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMouseDragged
-        Graphics2D g2 = (Graphics2D) buffer.getGraphics();
         //Borro lo que hubiera en el lienzo
-        g2.drawImage(buffer2, 0, 0, null);
+        bufferGraphics.drawImage(buffer2, 0, 0, null);
         
         switch (formSelect) {
             case 1: 
-                miCirculo.dibujate(g2);
+                miCirculo.dibujate(bufferGraphics);
                 int radio = Math.abs((int) miCirculo.x - evt.getX());
                 miCirculo.width = radio;
                 miCirculo.height = radio;
                 break;
             case 2: 
-                miCuadrado.dibujate(g2);
+                miCuadrado.dibujate(bufferGraphics);
                 int lado = Math.abs((int) miCuadrado.x - evt.getX());
                 miCuadrado.width = lado;
                 miCuadrado.height = lado;
@@ -239,18 +240,16 @@ public class Ventana extends javax.swing.JFrame {
             default: return;
         }
         
-        g2.drawImage(buffer, 0, 0, null);
+        bufferGraphics.drawImage(buffer, 0, 0, null);
         repaint(0, 0, 1, 1);
     }//GEN-LAST:event_lienzoMouseDragged
 
     private void lienzoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMouseReleased
-        Graphics2D g2 = (Graphics2D) buffer2.getGraphics();
-
         switch (formSelect) {
             case 1: 
-                miCirculo.dibujate(g2); break;
+                miCirculo.dibujate(buffer2Graphics); break;
             case 2: 
-                miCuadrado.dibujate(g2); break;
+                miCuadrado.dibujate(buffer2Graphics); break;
             default: return;
         }
     }//GEN-LAST:event_lienzoMouseReleased

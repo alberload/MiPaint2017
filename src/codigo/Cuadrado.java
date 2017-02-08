@@ -22,14 +22,18 @@ public class Cuadrado extends Rectangle2D.Double {
         this.color = _color;
         this.relleno = _relleno;
     }
-    
-    public void dibujate (Graphics2D g2){
+
+    public void dibujate(Graphics2D g2, int posX) {
+        int lado = Math.abs((int) this.x - posX);
+        this.width = lado;
+        this.height = lado;
+
         g2.setColor(color);
-        if (relleno){
+        if (relleno) {
             g2.fill(this);
-        }else {
+        } else {
             g2.draw(this);
         }
-        
+
     }
 }

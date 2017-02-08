@@ -88,6 +88,8 @@
                       <Component id="botonCuadrado" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="botonCirculo" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="botonTriangulo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -105,6 +107,7 @@
                   <Component id="jButton1" alignment="3" max="32767" attributes="0"/>
                   <Component id="botonCuadrado" alignment="3" pref="53" max="32767" attributes="0"/>
                   <Component id="botonCirculo" alignment="3" pref="53" max="32767" attributes="0"/>
+                  <Component id="botonTriangulo" alignment="3" pref="53" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="lienzo" min="-2" max="-2" attributes="0"/>
@@ -156,6 +159,14 @@
       </Properties>
       <Events>
         <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botonCirculoMousePressed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="botonTriangulo">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Triangulo"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="botonTrianguloMousePressed"/>
       </Events>
     </Component>
   </SubComponents>

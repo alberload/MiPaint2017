@@ -23,14 +23,18 @@ public class Circulo extends Ellipse2D.Double {
         this.color = _color;
         this.relleno = _relleno;
     }
-    
-    public void dibujate (Graphics2D g2){
+
+    public void dibujate(Graphics2D g2, int posX) {
+        int radio = Math.abs((int) this.x - posX);
+        this.width = radio;
+        this.height = radio;
+
         g2.setColor(color);
-        if (relleno){
+        if (relleno) {
             g2.fill(this);
-        }else {
+        } else {
             g2.draw(this);
         }
-        
     }
+
 }

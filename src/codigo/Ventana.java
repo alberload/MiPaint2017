@@ -25,6 +25,7 @@ public class Ventana extends javax.swing.JFrame {
     
     Circulo miCirculo = null;
     Cuadrado miCuadrado = null;
+    Triangulo miTriangulo = null;
     Color colorSelect = null;
     int formSelect = 0;
 
@@ -32,6 +33,8 @@ public class Ventana extends javax.swing.JFrame {
         initComponents();
         initBuffers();
         jDialog1.setSize(690, 430);
+        colorSelect = Color.BLACK;
+        jButton1.setBackground(colorSelect);
     }
 
     private void initBuffers() {
@@ -78,6 +81,7 @@ public class Ventana extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         botonCuadrado = new javax.swing.JButton();
         botonCirculo = new javax.swing.JButton();
+        botonTriangulo = new javax.swing.JButton();
 
         jButton2.setText("Cancelar");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -173,6 +177,13 @@ public class Ventana extends javax.swing.JFrame {
             }
         });
 
+        botonTriangulo.setText("Triangulo");
+        botonTriangulo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                botonTrianguloMousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -184,6 +195,8 @@ public class Ventana extends javax.swing.JFrame {
                         .addComponent(botonCuadrado)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(botonCirculo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botonTriangulo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1))
                     .addComponent(lienzo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -196,7 +209,8 @@ public class Ventana extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(botonCuadrado, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
-                    .addComponent(botonCirculo, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE))
+                    .addComponent(botonCirculo, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                    .addComponent(botonTriangulo, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lienzo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -209,11 +223,15 @@ public class Ventana extends javax.swing.JFrame {
         switch (formSelect) {
             case 1: 
                 miCirculo = new Circulo(evt.getX(), evt.getY(), 1, colorSelect, true); 
-                miCirculo.dibujate(bufferGraphics);
+                miCirculo.dibujate(bufferGraphics, evt.getX());
                 break;
             case 2: 
                 miCuadrado = new Cuadrado(evt.getX(), evt.getY(), 1, colorSelect, true); 
-                miCuadrado.dibujate(bufferGraphics);
+                miCuadrado.dibujate(bufferGraphics, evt.getX());
+                break;
+            case 3: 
+                miTriangulo = new Triangulo(evt.getX(), evt.getY(), 1, colorSelect, true); 
+                miTriangulo.dibujate(bufferGraphics, evt.getX());
                 break;
             default: return;
         }
@@ -225,18 +243,15 @@ public class Ventana extends javax.swing.JFrame {
         bufferGraphics.drawImage(buffer2, 0, 0, null);
         
         switch (formSelect) {
-            case 1: 
-                miCirculo.dibujate(bufferGraphics);
-                int radio = Math.abs((int) miCirculo.x - evt.getX());
-                miCirculo.width = radio;
-                miCirculo.height = radio;
+            case 1:
+                miCirculo.dibujate(bufferGraphics, evt.getX());
                 break;
             case 2: 
-                miCuadrado.dibujate(bufferGraphics);
-                int lado = Math.abs((int) miCuadrado.x - evt.getX());
-                miCuadrado.width = lado;
-                miCuadrado.height = lado;
+                miCuadrado.dibujate(bufferGraphics, evt.getX());
                 break;
+            case 3: 
+                miTriangulo.dibujate(bufferGraphics, evt.getX());
+                break;    
             default: return;
         }
         
@@ -247,9 +262,11 @@ public class Ventana extends javax.swing.JFrame {
     private void lienzoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMouseReleased
         switch (formSelect) {
             case 1: 
-                miCirculo.dibujate(buffer2Graphics); break;
+                miCirculo.dibujate(buffer2Graphics, evt.getX()); break;
             case 2: 
-                miCuadrado.dibujate(buffer2Graphics); break;
+                miCuadrado.dibujate(buffer2Graphics, evt.getX()); break;
+            case 3:
+                miTriangulo.dibujate(buffer2Graphics, evt.getX()); break;
             default: return;
         }
     }//GEN-LAST:event_lienzoMouseReleased
@@ -279,6 +296,10 @@ public class Ventana extends javax.swing.JFrame {
     private void botonCirculoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonCirculoMousePressed
         formSelect = 1;
     }//GEN-LAST:event_botonCirculoMousePressed
+
+    private void botonTrianguloMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_botonTrianguloMousePressed
+        formSelect = 3;
+    }//GEN-LAST:event_botonTrianguloMousePressed
 
     /**
      * @param args the command line arguments
@@ -318,6 +339,7 @@ public class Ventana extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonCirculo;
     private javax.swing.JButton botonCuadrado;
+    private javax.swing.JButton botonTriangulo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
